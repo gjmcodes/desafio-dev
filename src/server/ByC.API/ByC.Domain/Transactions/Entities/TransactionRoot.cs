@@ -50,9 +50,9 @@ namespace ByC.Domain.Transactions.Entities
 
         public ValidationResult IsValid()
         {
-            var result = new ValidationResult();
 
-            result = new CNABValidation().Validate(this);
+
+            ValidationResult result = new CNABValidation().Validate(this);
             if (!result.IsValid)
                 return result;
 
@@ -72,7 +72,7 @@ namespace ByC.Domain.Transactions.Entities
 
         public static int? ParseInt(string substringIntCnab)
         {
-            int value = 0;
+            int value;
             if (int.TryParse(substringIntCnab, out value))
                 return value;
 
