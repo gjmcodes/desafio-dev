@@ -1,4 +1,6 @@
-﻿namespace ByC.Domain.Core.Validations
+﻿using System.Linq;
+
+namespace ByC.Domain.Core.Validations
 {
     public class CPFValidation
     {
@@ -7,7 +9,9 @@
 		
 		public static bool CPFIsValid(string cpf)
 		{
-			
+			if (cpf.Distinct().Count() == 1)
+				return false;
+
 			string tempCPF;
 			string digit;
 			int sum;

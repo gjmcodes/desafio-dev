@@ -11,8 +11,18 @@ namespace ByC.REST.Data
 
         }
         public DbSet<TransactionRoot> Transactions { get; set; }
+        public DbSet<CnabRoot> Cnabs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+            modelBuilder = BuildTransactionRoot(modelBuilder);
+            modelBuilder = BuildCnabRoot(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        ModelBuilder BuildTransactionRoot(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TransactionRoot>().HasKey(t => t.Id);
             modelBuilder.Entity<TransactionRoot>().Property(p => p.Type)
@@ -40,7 +50,15 @@ namespace ByC.REST.Data
               .HasMaxLength(18);
             modelBuilder.Entity<TransactionRoot>().Ignore(p => p.cnab);
 
-            base.OnModelCreating(modelBuilder);
+            return modelBuilder;
+        }
+
+        ModelBuilder BuildCnabRoot(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CnabRoot>().HasKey(p => p.Value);
+            modelBuilder.Entity<CnabRoot>().Property(p => p.Value).IsRequired();
+
+            return modelBuilder;
         }
     }
 }

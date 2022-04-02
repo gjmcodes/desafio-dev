@@ -68,6 +68,7 @@ namespace ByC.REST.Controllers
                 if (string.IsNullOrEmpty(cnab))
                     continue;
 
+
                 var transaction = new TransactionRoot(cnab);
                 var transactionValidation = transaction.IsValid();
                 
@@ -81,6 +82,7 @@ namespace ByC.REST.Controllers
 
                 transactions.Add(transaction);
                 _context.Transactions.Add(transaction);
+                _context.Cnabs.Add(new CnabRoot(cnab));
             }
 
             await _context.SaveChangesAsync();

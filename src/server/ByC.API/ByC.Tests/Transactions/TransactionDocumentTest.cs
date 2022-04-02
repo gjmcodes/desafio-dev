@@ -28,7 +28,7 @@ namespace ByC.Tests
         }
 
         [TestMethod]
-        public void NewTransaction_Document_AllZero_IsInvalid()
+        public void NewTransaction_Document_AllEqual_IsInvalid()
         {
             // Arrange
             var cnab = CNABHelpers.GetCNAB(doc: "00000000000");
