@@ -2,6 +2,7 @@
 {
     public static class CNABHelpers
     {
+        public const string validCNAB = "3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       ";
         const string cnabTemplate = "{0}{1}{2}{3}{4}{5}{6}{7}";
 
         const string typeDefault = "1";

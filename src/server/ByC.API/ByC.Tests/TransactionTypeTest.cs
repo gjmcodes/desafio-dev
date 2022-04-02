@@ -2,6 +2,7 @@
 using ByC.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace ByC.Tests
 {
@@ -22,9 +23,29 @@ namespace ByC.Tests
 
             // Act
             var transaction = new TransactionRoot(cnab);
+            var validation = transaction.IsValid();
 
             // Assert
             Assert.IsTrue(transaction.Type != null && transaction.Type == type);
+            Assert.IsTrue(validation.IsValid);
+        }
+
+        [TestMethod]
+        public void NewTransaction_Type_IsInvalid()
+        {
+            // Arrange
+            var type = 0;
+
+            var cnab = CNABHelpers.GetCNAB(type: type.ToString());
+
+            // Act
+            var transaction = new TransactionRoot(cnab);
+            var validation = transaction.IsValid();
+
+            // Assert
+            Assert.IsTrue(validation.IsValid == false);
+            Assert.IsTrue(validation.Errors.Any(x => x.PropertyName.ToLower() == "type"));
+
         }
     }
 }

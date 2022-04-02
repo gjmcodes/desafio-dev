@@ -21,15 +21,15 @@ namespace ByC.REST.Models
         }
     }
 
-    public struct InvalidCNABs
+    public class InvalidCNABs
     {
-        public string cnab;
-        public string[] validations;
+        public string Cnab { get; set; }
+        public string[] Validations { get; set; }
 
         public InvalidCNABs(string cnab, string[] validations)
         {
-            this.cnab = cnab;
-            this.validations = validations;
+            Cnab = cnab;
+            Validations = validations;
         }
     }
 }
