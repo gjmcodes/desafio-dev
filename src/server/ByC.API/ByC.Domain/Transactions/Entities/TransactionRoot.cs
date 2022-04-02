@@ -17,6 +17,8 @@ namespace ByC.Domain.Transactions.Entities
         public string StoreOwnerName { get; private set; }
         public string StoreName { get; private set; }
 
+        //For EF use
+        protected TransactionRoot() { }
 
         public TransactionRoot(string cnab)
         {
