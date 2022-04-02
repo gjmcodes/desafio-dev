@@ -42,22 +42,26 @@ namespace ByC.REST.Controllers
         // POST: api/Transaction
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> PostTransactionRoot(IFormFile file)
+        public async Task<IActionResult> PostTransactionRoot()
         {
-            var cnabData = new List<string>();
+            if (!Request.HasFormContentType)
+                return BadRequest("No file found");
 
-            using (var reader = new StreamReader(file.OpenReadStream()))
-            {
-                string? line = null;
-                while ((line = await reader.ReadLineAsync()) != null)
-                {
-                    cnabData.Add(line);
-                }
-            }
+            var requestForm = await Request.ReadFormAsync();
+            var file = requestForm.FirstOrDefault(x => x.Key == "file");
+
+            if (file.Key == null)
+                return BadRequest();
+
+            var cnabFile = file.Value.Last();
+            var cnabData = cnabFile.Split("\n");
 
             var transactions = new List<TransactionRoot>();
             foreach (var cnab in cnabData)
             {
+                if (string.IsNullOrEmpty(cnab))
+                    continue;
+
                 var transaction = new TransactionRoot(cnab);
                 transactions.Add(transaction);
                 _context.Transactions.Add(transaction);
