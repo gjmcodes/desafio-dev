@@ -40,12 +40,14 @@ class _HomePageState extends State<HomePage> {
 
       var bytes = result?.files.single.bytes;
       var request = http.MultipartRequest("POST", uri);
+      request.headers['Access-Control-Allow-Origin'] = '*';
       request.fields['file'] = 'cnab';
       List<int> _filesBytes = bytes!.map((e) => e).toList();
       request.files.add(http.MultipartFile.fromBytes('file', _filesBytes,
           contentType: MediaType('multipart', 'form-data')));
 
       request.send().then((response) {
+        print(response);
         if (response.statusCode == 200) print("Uploaded!");
       });
     } else {

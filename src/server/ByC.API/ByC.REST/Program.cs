@@ -1,4 +1,5 @@
 using ByC.REST.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ByCDbContext>(opt => opt.UseInMemoryDatabase("bycdb"));
 
+const string corsKey = "ByCors";
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: corsKey,
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(corsKey);
 
 app.UseHttpsRedirection();
 

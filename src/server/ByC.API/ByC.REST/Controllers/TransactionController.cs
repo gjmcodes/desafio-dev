@@ -44,14 +44,16 @@ namespace ByC.REST.Controllers
         [HttpPost]
         public async Task<IActionResult> PostTransactionRoot()
         {
+            const string fileNotFound = "File not found in request";
+
             if (!Request.HasFormContentType)
-                return BadRequest("No file found");
+                return BadRequest(fileNotFound);
 
             var requestForm = await Request.ReadFormAsync();
             var file = requestForm.FirstOrDefault(x => x.Key == "file");
 
             if (file.Key == null)
-                return BadRequest();
+                return BadRequest(fileNotFound);
 
             var cnabFile = file.Value.Last();
             var cnabData = cnabFile.Split("\n");
