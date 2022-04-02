@@ -39,7 +39,8 @@ namespace ByC.Tests.Transactions
             var validation = transaction.IsValid();
 
             // Assert
-            Assert.IsTrue(validation.IsValid);
+            Assert.IsTrue(validation.IsValid == false);
+            Assert.IsTrue(validation.Errors.Any(x => x.PropertyName.ToLower() == "card"));
         }
 
         [TestMethod]

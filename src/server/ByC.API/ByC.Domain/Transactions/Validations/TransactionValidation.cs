@@ -22,7 +22,9 @@ namespace ByC.Domain.Transactions.Validations
                 .WithMessage("Document is invalid")
                 .OverridePropertyName("document");
             RuleFor(p => p.Card).NotNull().NotEmpty().WithErrorCode(ValidationCodes.Card.ToString());
-            RuleFor(p => p.Card.Trim().Length).Equal(12).WithErrorCode(ValidationCodes.Card.ToString());
+            RuleFor(p => p.Card.Trim().Length).Equal(12).WithErrorCode(ValidationCodes.Card.ToString())
+                .OverridePropertyName("card");
+
             RuleFor(p => CardValidation.CardHasHiddenCharacters(p.Card))
                 .NotEqual(false)
                 .WithErrorCode(ValidationCodes.Card.ToString())
