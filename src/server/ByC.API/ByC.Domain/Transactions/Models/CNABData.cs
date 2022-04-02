@@ -26,7 +26,7 @@
             var length = data.Length;
 
             if ((index + length) >= cnab.Length)
-                length--;
+                length -= CNABData.zeroBasedOffset;
 
             var value = cnab.Substring(index, length);
             return value;

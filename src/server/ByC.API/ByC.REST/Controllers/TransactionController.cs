@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ByC.Domain.Transactions.Entities;
 using ByC.REST.Data;
+using ByC.REST.Models;
 
 namespace ByC.REST.Controllers
 {
@@ -45,15 +46,18 @@ namespace ByC.REST.Controllers
         public async Task<IActionResult> PostTransactionRoot()
         {
             const string fileNotFound = "File not found in request";
+            const string fileKey = "file";
 
             if (!Request.HasFormContentType)
                 return BadRequest(fileNotFound);
 
             var requestForm = await Request.ReadFormAsync();
-            var file = requestForm.FirstOrDefault(x => x.Key == "file");
+            var file = requestForm.FirstOrDefault(x => x.Key == fileKey);
 
             if (file.Key == null)
                 return BadRequest(fileNotFound);
+
+            var uploadResponse = new UploadResponse();
 
             var cnabFile = file.Value.Last();
             var cnabData = cnabFile.Split("\n");
@@ -65,13 +69,23 @@ namespace ByC.REST.Controllers
                     continue;
 
                 var transaction = new TransactionRoot(cnab);
+                var transactionValidation = transaction.IsValid();
+                
+                if (!transactionValidation.IsValid)
+                {
+                    uploadResponse.AddInvalidCnab(cnab, transactionValidation);
+                    continue;
+                }
+
+                uploadResponse.AddValidCnab(cnab);
+
                 transactions.Add(transaction);
                 _context.Transactions.Add(transaction);
             }
 
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(uploadResponse);
 
         }
 
