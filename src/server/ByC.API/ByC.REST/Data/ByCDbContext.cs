@@ -38,7 +38,7 @@ namespace ByC.REST.Data
             modelBuilder.Entity<TransactionRoot>().Property(p => p.StoreName)
               .IsRequired()
               .HasMaxLength(18);
-
+            modelBuilder.Entity<TransactionRoot>().Ignore(p => p.cnab);
 
             base.OnModelCreating(modelBuilder);
         }

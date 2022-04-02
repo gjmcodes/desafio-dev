@@ -1,4 +1,5 @@
-﻿using ByC.Domain.Transactions.Entities;
+﻿using ByC.Domain.Core.Validations;
+using ByC.Domain.Transactions.Entities;
 using FluentValidation;
 
 namespace ByC.Domain.Transactions.Validations
@@ -12,6 +13,14 @@ namespace ByC.Domain.Transactions.Validations
             RuleFor(p => p.Date).NotNull().WithErrorCode(ValidationCodes.Date.ToString());
             RuleFor(p => p.Value).NotNull().WithErrorCode(ValidationCodes.Value.ToString());
             RuleFor(p => p.Document).NotNull().NotEmpty().WithErrorCode(ValidationCodes.Document.ToString());
+            RuleFor(p => p.Document.Length).Equal(11).WithErrorCode(ValidationCodes.Document.ToString());
+            RuleFor(p => p.Document).NotEqual("00000000000")
+                .WithErrorCode(ValidationCodes.Document.ToString())
+                .WithMessage("Document is invalid");
+            RuleFor(p => CPFValidation.CPFIsValid(p.Document)).NotEqual(false)
+                .WithErrorCode(ValidationCodes.Document.ToString())
+                .WithMessage("Document is invalid")
+                .OverridePropertyName("document");
             RuleFor(p => p.Card).NotNull().NotEmpty().WithErrorCode(ValidationCodes.Card.ToString());
             RuleFor(p => p.Hour).NotNull().NotEmpty().WithErrorCode(ValidationCodes.Hour.ToString());
             RuleFor(p => p.StoreOwnerName).NotNull().NotEmpty().WithErrorCode(ValidationCodes.StoreOwnerName.ToString());
