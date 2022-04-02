@@ -14,5 +14,22 @@
             IndexEnd = indexEnd;
             Length = (indexEnd - indexStart) + zeroBasedOffset;
         }
+
+       
+    }
+
+    public static class CNABExtensions
+    {
+        public static string ParseCnabString(this CNABData data, string cnab)
+        {
+            var index = data.IndexStart - CNABData.zeroBasedOffset;
+            var length = data.Length;
+
+            if ((index + length) >= cnab.Length)
+                length--;
+
+            var value = cnab.Substring(index, length);
+            return value;
+        }
     }
 }
