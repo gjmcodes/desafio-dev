@@ -84,10 +84,5 @@ namespace ByC.REST.Controllers
 
             return NoContent();
         }
-
-        private bool TransactionRootExists(Guid id)
-        {
-            return _context.Transactions.Any(e => e.Id == id);
-        }
     }
 }
