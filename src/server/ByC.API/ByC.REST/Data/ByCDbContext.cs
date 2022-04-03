@@ -13,6 +13,15 @@ namespace ByC.REST.Data
         public DbSet<TransactionRoot> Transactions { get; set; }
         public DbSet<CnabRoot> Cnabs { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string connString = @"Server=localhost;Port=3307;DataBase=byc_db;Uid=root;Pwd=root";
+
+            optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
