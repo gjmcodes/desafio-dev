@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <Configurations>Debug;Release;Migrations</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using ByC.Domain.Transactions.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace ByC.REST.Data
 {
@@ -15,10 +16,12 @@ namespace ByC.REST.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connString = @"Server=localhost;Port=3307;DataBase=byc_db;Uid=root;Pwd=root";
+            string connString = Environment.GetEnvironmentVariable("DB_CONN");
+
+            if(string.IsNullOrEmpty(connString))
+                    throw new Exception("DB_CONN is empty");
 
             optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
-
             base.OnConfiguring(optionsBuilder);
         }
 

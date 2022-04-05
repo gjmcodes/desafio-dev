@@ -12,11 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-#if DEBUG
-Environment.SetEnvironmentVariable("DB_CONN", "Server=localhost;Port=3307;DataBase=byc_db;Uid=root;Pwd=root");
-#endif
-var dbConn = Environment.GetEnvironmentVariable("DB_CONN");
-builder.Services.AddDbContext<ByCDbContext>(opt => opt.UseMySql(dbConn, ServerVersion.AutoDetect(dbConn)));
+
+builder.Services.AddDbContext<ByCDbContext>();
 
 const string corsKey = "ByCors";
 
@@ -31,14 +28,13 @@ builder.Services.AddCors(opt =>
         });
 });
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(corsKey);
 
@@ -47,5 +43,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await using var scope = app.Services.CreateAsyncScope();
+using var context = scope.ServiceProvider.GetService<ByCDbContext>();
+await context.Database.MigrateAsync();
 
 app.Run();

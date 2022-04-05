@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   void pickFile() async {
     result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      var uri = Uri.parse('https://localhost:7290/api/transaction');
+      var uri = Uri.parse('http://localhost:8080/api/transaction');
 
       var bytes = result?.files.single.bytes;
       var request = http.MultipartRequest("POST", uri);

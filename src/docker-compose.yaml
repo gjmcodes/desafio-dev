@@ -1,0 +1,40 @@
+version: '3.0'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+        - byc-vol:/var/lib/mysql
+    ports:
+        - "3307:3306"
+    environment:
+        - MYSQL_DATABASE=byc_db
+        - MYSQL_ROOT_PASSWORD=root
+  server:
+    build:
+        context: ./server/ByC.API
+        dockerfile: ByC.REST/Dockerfile
+    restart: always
+    tty: true
+    ports:
+        - "8080:80"
+    environment:
+      DB_CONN: "server=db;port=3306;database=byc_db;uid=root;pwd=root"
+    depends_on:
+        - db
+  app:
+    build:
+        context: ./byc_app/
+        dockerfile: Dockerfile
+    restart: always
+    tty: true
+    ports:
+        - "8081:80"
+    depends_on:
+        - server
+
+volumes:
+    byc-vol:
+
+        
+        

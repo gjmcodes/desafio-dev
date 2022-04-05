@@ -3,28 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByC.Domain", "ByC.Domain\ByC.Domain.csproj", "{4D7B5D51-0A93-44F3-846C-2E0C672D551C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByC.Domain", "ByC.Domain\ByC.Domain.csproj", "{4D7B5D51-0A93-44F3-846C-2E0C672D551C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByC.REST", "ByC.REST\ByC.REST.csproj", "{9B6F20FA-F88D-436F-BD15-0518A52B43F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByC.REST", "ByC.REST\ByC.REST.csproj", "{9B6F20FA-F88D-436F-BD15-0518A52B43F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByC.Tests", "ByC.Tests\ByC.Tests.csproj", "{7E8C521B-D20A-4141-A8DF-C992BE447A61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ByC.Tests", "ByC.Tests\ByC.Tests.csproj", "{7E8C521B-D20A-4141-A8DF-C992BE447A61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Migrations|Any CPU = Migrations|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Migrations|Any CPU.ActiveCfg = Migrations|Any CPU
+		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Migrations|Any CPU.Build.0 = Migrations|Any CPU
 		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D7B5D51-0A93-44F3-846C-2E0C672D551C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Migrations|Any CPU.ActiveCfg = Migrations|Any CPU
+		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Migrations|Any CPU.Build.0 = Migrations|Any CPU
 		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B6F20FA-F88D-436F-BD15-0518A52B43F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Migrations|Any CPU.ActiveCfg = Migrations|Any CPU
+		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Migrations|Any CPU.Build.0 = Migrations|Any CPU
 		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E8C521B-D20A-4141-A8DF-C992BE447A61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
