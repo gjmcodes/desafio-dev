@@ -33,26 +33,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FilePickerResult? result;
 
+  bool isUploading = false;
+  bool uploadSuccess = false;
+
   void pickFile() async {
-    result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      var uri = Uri.parse('http://localhost:8080/api/transaction');
-
-      var bytes = result?.files.single.bytes;
-      var request = http.MultipartRequest("POST", uri);
-      request.headers['Access-Control-Allow-Origin'] = '*';
-      request.fields['file'] = 'cnab';
-      List<int> _filesBytes = bytes!.map((e) => e).toList();
-      request.files.add(http.MultipartFile.fromBytes('file', _filesBytes,
-          contentType: MediaType('multipart', 'form-data')));
-
-      request.send().then((response) {
-        print(response);
-        if (response.statusCode == 200) print("Uploaded!");
+    try {
+      setState(() {
+        isUploading = true;
       });
-    } else {
-      print('user cancelled');
-      // User canceled the picker
+
+      result = await FilePicker.platform.pickFiles();
+
+      if (result != null) {
+        var uri = Uri.parse('http://localhost:8080/api/transaction');
+
+        var bytes = result?.files.single.bytes;
+        var request = http.MultipartRequest("POST", uri);
+        request.headers['Access-Control-Allow-Origin'] = '*';
+        request.fields['file'] = 'cnab';
+        List<int> _filesBytes = bytes!.map((e) => e).toList();
+        request.files.add(http.MultipartFile.fromBytes('file', _filesBytes,
+            contentType: MediaType('multipart', 'form-data')));
+
+        var response = await request.send();
+        if (response.statusCode == 200) {
+          uploadSuccess = true;
+          print("Uploaded!");
+        } else {
+          print('user cancelled');
+        }
+      }
+
+      setState(() {
+        isUploading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isUploading = false;
+      });
     }
   }
 
@@ -61,11 +79,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(title: Text('_ByCoders App')),
       body: Container(
-        child: Center(
-          child: ElevatedButton(
-            child: Text('upload file'),
-            onPressed: () async => {pickFile()},
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            uploadSuccess
+                ? AlertDialog(
+                    title: const Text('Upload Successful'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              uploadSuccess = false;
+                            });
+                          },
+                          child: const Text('ok'))
+                    ],
+                  )
+                : Center(
+                  child: ElevatedButton(
+                      child: Text(isUploading ? 'uploading...' : 'upload file'),
+                      onPressed: isUploading ? null : pickFile,
+                    ),
+                ),
+          ],
         ),
       ),
     );

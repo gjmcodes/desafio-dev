@@ -16,10 +16,13 @@ namespace ByC.REST.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+#if MIGRATIONS
+            Environment.SetEnvironmentVariable("DB_CONN", "server=localhost;port=3307;database=byc_db;uid=root;pwd=root");
+#endif
             string connString = Environment.GetEnvironmentVariable("DB_CONN");
 
-            if(string.IsNullOrEmpty(connString))
-                    throw new Exception("DB_CONN is empty");
+            if (string.IsNullOrEmpty(connString))
+                throw new Exception("DB_CONN is empty");
 
             optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
             base.OnConfiguring(optionsBuilder);
@@ -27,7 +30,7 @@ namespace ByC.REST.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
             modelBuilder = BuildTransactionRoot(modelBuilder);
             modelBuilder = BuildCnabRoot(modelBuilder);
 
@@ -60,7 +63,6 @@ namespace ByC.REST.Data
             modelBuilder.Entity<TransactionRoot>().Property(p => p.StoreName)
               .IsRequired()
               .HasMaxLength(18);
-            modelBuilder.Entity<TransactionRoot>().Ignore(p => p.cnab);
 
             return modelBuilder;
         }
@@ -69,8 +71,14 @@ namespace ByC.REST.Data
         {
             modelBuilder.Entity<CnabRoot>().HasKey(p => p.Value);
             modelBuilder.Entity<CnabRoot>().Property(p => p.Value).IsRequired();
+            modelBuilder.Entity<CnabRoot>().HasMany(p => p.TransactionRoots)
+                .WithOne(p => p.Cnab)
+                .HasForeignKey(p => p.CnabId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             return modelBuilder;
         }
+
+
     }
 }

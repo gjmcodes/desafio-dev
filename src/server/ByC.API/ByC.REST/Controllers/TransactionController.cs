@@ -63,15 +63,22 @@ namespace ByC.REST.Controllers
             var cnabData = cnabFile.Split("\n");
 
             var transactions = new List<TransactionRoot>();
+
             foreach (var cnab in cnabData)
             {
                 if (string.IsNullOrEmpty(cnab))
                     continue;
 
+                var cnabRoot = new CnabRoot(cnab);
+                var oldCnab = await _context.Cnabs.FirstOrDefaultAsync(x => x.Value == cnab);
+                if (oldCnab != null)
+                    _context.Cnabs.Remove(oldCnab);
+
+                _context.Cnabs.Add(cnabRoot);
 
                 var transaction = new TransactionRoot(cnab);
                 var transactionValidation = transaction.IsValid();
-                
+
                 if (!transactionValidation.IsValid)
                 {
                     uploadResponse.AddInvalidCnab(cnab, transactionValidation);
@@ -82,7 +89,6 @@ namespace ByC.REST.Controllers
 
                 transactions.Add(transaction);
                 _context.Transactions.Add(transaction);
-                _context.Cnabs.Add(new CnabRoot(cnab));
             }
 
             await _context.SaveChangesAsync();

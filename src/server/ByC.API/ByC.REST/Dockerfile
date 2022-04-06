@@ -7,8 +7,6 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-RUN dotnet new tool-manifest --name byc-tool-manifest
-RUN dotnet tool install --global dotnet-ef
 COPY ["ByC.REST/ByC.REST.csproj", "ByC.REST/"]
 COPY ["ByC.Domain/ByC.Domain.csproj", "ByC.Domain/"]
 RUN dotnet restore "ByC.REST/ByC.REST.csproj"

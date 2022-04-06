@@ -3,6 +3,7 @@ using ByC.Domain.Transactions.Models;
 using ByC.Domain.Transactions.Validations;
 using FluentValidation.Results;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace ByC.Domain.Transactions.Entities
@@ -21,33 +22,33 @@ namespace ByC.Domain.Transactions.Entities
         public string StoreOwnerName { get; private set; }
         public string StoreName { get; private set; }
 
+        public string CnabId { get; private set; }
+        public virtual CnabRoot Cnab { get; private set; } 
         //For EF use
         protected TransactionRoot() { }
 
         public TransactionRoot(string cnab)
         {
             this.Id = Guid.NewGuid();
-            this.cnab = cnab;
+            this.CnabId = cnab;
 
-            if (this.cnab.Length == cnabLengthZeroBased)
+            if (this.CnabId.Length == cnabLengthZeroBased)
             {
-                this.Type = ParseInt(CNABDataFactory.Type.ParseCnabString(cnab));
-                this.Date = ParseDate(CNABDataFactory.Date.ParseCnabString(cnab));
-                this.Document = CNABDataFactory.Document.ParseCnabString(cnab);
-                this.Card = CNABDataFactory.Card.ParseCnabString(cnab);
-                this.Hour = ParseTimeSpan(CNABDataFactory.Hour.ParseCnabString(cnab));
-                this.StoreOwnerName = CNABDataFactory.StoreOwnerName.ParseCnabString(cnab);
-                this.StoreName = CNABDataFactory.StoreName.ParseCnabString(cnab);
+                this.Type = ParseInt(CNABDataFactory.Type.ParseCnabString(CnabId));
+                this.Date = ParseDate(CNABDataFactory.Date.ParseCnabString(CnabId));
+                this.Document = CNABDataFactory.Document.ParseCnabString(CnabId);
+                this.Card = CNABDataFactory.Card.ParseCnabString(CnabId);
+                this.Hour = ParseTimeSpan(CNABDataFactory.Hour.ParseCnabString(CnabId));
+                this.StoreOwnerName = CNABDataFactory.StoreOwnerName.ParseCnabString(CnabId);
+                this.StoreName = CNABDataFactory.StoreName.ParseCnabString(CnabId);
 
-                this.Value = ParseValue(CNABDataFactory.Value.ParseCnabString(cnab));
+                this.Value = ParseValue(CNABDataFactory.Value.ParseCnabString(CnabId));
                 if (Value.HasValue)
                     this.Value = GetTransactionFixedValue(this.Value);
             }
         }
 
         #region VALIDATIONS
-        public string cnab;
-
         public ValidationResult IsValid()
         {
 
