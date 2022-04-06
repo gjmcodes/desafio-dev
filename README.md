@@ -15,7 +15,7 @@ Este projeto utiliza as seguintes tecnologias:
 
 # Como executar
 
-- Abrir o terminal na raíz do projeto, onde se encontra o arquivo **docker-compose.yaml**
+- Abrir o terminal dentro do diretório "src/", onde se encontra o arquivo **docker-compose.yaml** (src/docker-compose.yaml)
 - Executar o comando *docker-compose up*
 
 # API
